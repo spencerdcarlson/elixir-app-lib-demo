@@ -13,5 +13,7 @@ See [controller.ex](./lib/demo_app_web/controllers/controller.ex) for more detai
 The idea is to demonstrate how the `:demo_lib` application crashing, or running into errors affects or does not affect 
 this phoenix application depending on how the `:demo_lib` application is used.
 
+Play with `start_permanent: true` in [mix.exs](./mix.exs) to see different behaviors after hitting `/api/lib/crash` 
+
 ## DemoLib
 You can modify and rebuild `:demo_lib` by executing `cd demo_lib && mix compile`
