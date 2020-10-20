@@ -4,23 +4,6 @@ defmodule DemoAppWeb.Controller do
 
   action_fallback DemoAppWeb.FallbackController
 
-  swagger_path :health do
-    get "/health"
-    summary "Get the status of demo_app and demo_lib"
-    response 200, """
-    {"demo_app": true, "demo_lib": true}
-    """
-  end
-
-  swagger_path :lib do
-    get "/lib/{action}"
-    summary "Perform an action on the :demo_lib library"
-    parameters do
-      action :path, :string, "action", required: true, enum: ~w(cast call error crash restart none)
-    end
-    response 200, ""
-  end
-
   def health(conn, _params) do
     apps = Application.started_applications()
 
@@ -64,7 +47,9 @@ defmodule DemoAppWeb.Controller do
       json(conn, "already started")
     else
       case Application.ensure_all_started(:demo_lib) do
-        {:ok, [:demo_lib]} -> json(conn, "started")
+        {:ok, [:demo_lib]} ->
+          json(conn, "started")
+
         _ ->
           conn
           |> put_status(400)
@@ -79,4 +64,28 @@ defmodule DemoAppWeb.Controller do
     |> json("Bad value. Accepted action values: [cast, call, error, crash, restart, none]")
   end
 
+
+  # Swagger documentation
+  swagger_path :health do
+    get("/health")
+    summary("Get the status of demo_app and demo_lib")
+
+    response(200, """
+    {"demo_app": true, "demo_lib": true}
+    """)
+  end
+
+  swagger_path :lib do
+    get("/lib/{action}")
+    summary("Perform an action on the :demo_lib library")
+
+    parameters do
+      action(:path, :string, "action",
+        required: true,
+        enum: ~w(cast call error crash restart none)
+      )
+    end
+
+    response(200, "")
+  end
 end

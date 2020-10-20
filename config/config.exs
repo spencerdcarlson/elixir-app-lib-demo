@@ -7,9 +7,6 @@
 # General application configuration
 use Mix.Config
 
-#config :demo_app,
-#  ecto_repos: [DemoApp.Repo]
-
 # Configures the endpoint
 config :demo_app, DemoAppWeb.Endpoint,
   url: [host: "localhost"],
@@ -18,12 +15,14 @@ config :demo_app, DemoAppWeb.Endpoint,
   pubsub: [name: DemoApp.PubSub, adapter: Phoenix.PubSub.PG2]
 
 config :demo_app, :phoenix_swagger,
-       swagger_files: %{
-         "priv/static/swagger.json" => [
-           router: DemoAppWeb.Router,     # phoenix routes will be converted to swagger paths
-           endpoint: DemoAppWeb.Endpoint  # (optional) endpoint config used to set host, port and https schemes.
-         ]
-       }
+  swagger_files: %{
+    "priv/static/swagger.json" => [
+      # phoenix routes will be converted to swagger paths
+      router: DemoAppWeb.Router,
+      # (optional) endpoint config used to set host, port and https schemes.
+      endpoint: DemoAppWeb.Endpoint
+    ]
+  }
 
 config :phoenix_swagger, json_library: Jason
 
